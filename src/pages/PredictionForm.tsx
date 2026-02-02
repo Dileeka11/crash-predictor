@@ -11,6 +11,7 @@ import VehicleInfoStep from '@/components/form/VehicleInfoStep';
 import DriverInfoStep from '@/components/form/DriverInfoStep';
 import EnvironmentStep from '@/components/form/EnvironmentStep';
 import { ChevronLeft, ChevronRight, Send, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const TOTAL_STEPS = 4;
 
@@ -38,6 +39,7 @@ const PredictionForm = () => {
       navigate('/results');
     } catch (error) {
       console.error('Prediction failed:', error);
+      toast.error('Prediction failed. Please ensure the backend server is running on http://localhost:8000');
     } finally {
       setIsLoading(false);
     }

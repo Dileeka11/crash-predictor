@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Shield, BarChart2, Zap, Car, AlertTriangle, ChevronRight } from 'lucide-react';
+import { ArrowRight, Shield, BarChart2, Zap, Info, AlertTriangle, ChevronRight, Activity } from 'lucide-react';
 
 const features = [
   {
     icon: Shield,
-    title: 'Accurate Predictions',
-    description: 'ML model trained on 125K+ crash records with 87%+ accuracy',
+    title: 'Safety Insights',
+    description: 'Understand crash patterns and key safety learnings from historical data.',
   },
   {
     icon: BarChart2,
     title: 'Risk Analysis',
-    description: 'Identify key factors contributing to crash severity',
+    description: 'Identify influential factors that drive crash severity outcomes.',
   },
   {
     icon: Zap,
-    title: 'Instant Results',
-    description: 'Get predictions and recommendations in seconds',
+    title: 'Interactive Dashboard',
+    description: 'Explore curated visuals and summaries without running predictions.',
   },
 ];
 
@@ -41,22 +41,20 @@ const Index = () => {
 
             {/* Heading */}
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Predict Car Crash{' '}
-              <span className="text-primary">Severity</span>{' '}
-              with Machine Learning
+              Crash Safety <span className="text-primary">Insights</span>{' '}
+              &amp; Analysis Hub
             </h1>
 
             {/* Subheading */}
             <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Enter crash scenario details and get instant predictions on injury severity, 
-              key risk factors, and personalized safety recommendations.
+              Explore curated crash data insights, severity patterns, and safety learnings without running prediction forms.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/predict">
                 <Button size="lg" className="gap-2 px-8 text-lg h-14">
-                  <Car className="h-5 w-5" />
+                  <Activity className="h-5 w-5" />
                   Start Prediction
                   <ArrowRight className="h-5 w-5" />
                 </Button>
@@ -65,6 +63,12 @@ const Index = () => {
                 <Button size="lg" variant="outline" className="gap-2 px-8 text-lg h-14">
                   <BarChart2 className="h-5 w-5" />
                   View Dashboard
+                </Button>
+              </Link>
+              <Link to="/about">
+                <Button size="lg" variant="outline" className="gap-2 px-8 text-lg h-14">
+                  <Info className="h-5 w-5" />
+                  Learn More
                 </Button>
               </Link>
             </div>
@@ -94,60 +98,16 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Severity Preview */}
-      <section className="py-16">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Three Severity Levels</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Our model predicts crash outcomes across three severity categories
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="border-2 border-severity-minor/50 bg-severity-minor/5">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-4">🟢</div>
-                <h3 className="text-xl font-bold text-severity-minor mb-2">Minor Injury</h3>
-                <p className="text-sm text-muted-foreground">
-                  Non-life-threatening injuries requiring minimal medical attention
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-severity-severe/50 bg-severity-severe/5">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-4">🟡</div>
-                <h3 className="text-xl font-bold text-severity-severe mb-2">Severe Injury</h3>
-                <p className="text-sm text-muted-foreground">
-                  Serious injuries requiring hospitalization and extended care
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-severity-fatal/50 bg-severity-fatal/5">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-4">🔴</div>
-                <h3 className="text-xl font-bold text-severity-fatal mb-2">Fatal</h3>
-                <p className="text-sm text-muted-foreground">
-                  Life-threatening or fatal injuries with highest severity
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-primary/10 via-transparent to-accent/10">
         <div className="container text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Analyze a Crash Scenario?</h2>
+          <h2 className="text-3xl font-bold mb-4">Explore the Crash Insights Dashboard</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Enter crash parameters and receive instant severity predictions with actionable safety insights.
+            Browse curated visuals, safety takeaways, and data-backed summaries.
           </p>
-          <Link to="/predict">
+          <Link to="/dashboard">
             <Button size="lg" className="gap-2">
-              Start Prediction
+              Open Dashboard
               <ChevronRight className="h-5 w-5" />
             </Button>
           </Link>

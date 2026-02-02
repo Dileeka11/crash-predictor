@@ -5,7 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { useState } from 'react';
 
 const navItems = [
-  { path: '/', label: 'Predict', icon: Car },
+  { path: '/', label: 'Home', icon: Car },
   { path: '/dashboard', label: 'Dashboard', icon: BarChart2 },
   { path: '/about', label: 'About', icon: Info },
 ];

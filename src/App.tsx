@@ -8,10 +8,10 @@ import { PredictionProvider } from "@/context/PredictionContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Index from "./pages/Index";
-import PredictionForm from "./pages/PredictionForm";
-import Results from "./pages/Results";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
+import PredictionForm from "./pages/PredictionForm";
+import Results from "./pages/Results";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,8 +19,8 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <PredictionProvider>
-        <TooltipProvider>
+      <TooltipProvider>
+        <PredictionProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -39,8 +39,8 @@ const App = () => (
               <Footer />
             </div>
           </BrowserRouter>
-        </TooltipProvider>
-      </PredictionProvider>
+        </PredictionProvider>
+      </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
