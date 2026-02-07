@@ -2,26 +2,28 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { Activity, TrendingUp, Users, Car } from 'lucide-react';
 
+// Actual severity distribution from training data (4000 samples)
 const severityData = [
-  { name: 'Minor Injury', value: 45, color: 'hsl(var(--severity-minor))' },
-  { name: 'Severe Injury', value: 35, color: 'hsl(var(--severity-severe))' },
-  { name: 'Fatal', value: 20, color: 'hsl(var(--severity-fatal))' },
+  { name: 'Minor Injury', value: 68.9, color: 'hsl(var(--severity-minor))' },
+  { name: 'Severe Injury', value: 26.0, color: 'hsl(var(--severity-severe))' },
+  { name: 'Fatal', value: 5.1, color: 'hsl(var(--severity-fatal))' },
 ];
 
+// Actual feature importance from CatBoost model
 const featureImportance = [
-  { feature: 'Crash Speed', importance: 32 },
-  { feature: 'Seatbelt Use', importance: 24 },
-  { feature: 'Crash Type', importance: 18 },
-  { feature: 'Vehicle Type', importance: 12 },
-  { feature: 'Alcohol Level', importance: 8 },
-  { feature: 'Weather', importance: 6 },
+  { feature: 'Impact Angle', importance: 10.68 },
+  { feature: 'Driver Experience', importance: 10.52 },
+  { feature: 'Crash Speed', importance: 9.85 },
+  { feature: 'Traffic Density', importance: 9.55 },
+  { feature: 'Distraction Level', importance: 8.67 },
+  { feature: 'Visibility', importance: 7.50 },
 ];
 
 const stats = [
-  { label: 'Model Accuracy', value: '87.3%', icon: TrendingUp, color: 'text-severity-minor' },
-  { label: 'Training Samples', value: '125K+', icon: Activity, color: 'text-primary' },
-  { label: 'Risk Factors', value: '18', icon: Users, color: 'text-accent' },
-  { label: 'Predictions Made', value: '1,234', icon: Car, color: 'text-severity-severe' },
+  { label: 'Model Accuracy', value: '68.88%', icon: TrendingUp, color: 'text-severity-minor' },
+  { label: 'Training Samples', value: '4,000', icon: Activity, color: 'text-primary' },
+  { label: 'Input Features', value: '17', icon: Users, color: 'text-accent' },
+  { label: 'Severity Classes', value: '3', icon: Car, color: 'text-severity-severe' },
 ];
 
 const Dashboard = () => {
@@ -57,7 +59,7 @@ const Dashboard = () => {
           {/* Severity Distribution */}
           <Card className="glass-card">
             <CardHeader>
-              <CardTitle>Sample Prediction Distribution</CardTitle>
+              <CardTitle>Training Data Distribution</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64">
@@ -99,7 +101,7 @@ const Dashboard = () => {
           {/* Feature Importance */}
           <Card className="glass-card">
             <CardHeader>
-              <CardTitle>Feature Importance</CardTitle>
+              <CardTitle>Feature Importance (Top 6)</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64">
@@ -107,9 +109,9 @@ const Dashboard = () => {
                   <BarChart
                     data={featureImportance}
                     layout="vertical"
-                    margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+                    margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
                   >
-                    <XAxis type="number" domain={[0, 40]} tickFormatter={(v) => `${v}%`} stroke="hsl(var(--muted-foreground))" />
+                    <XAxis type="number" domain={[0, 12]} tickFormatter={(v) => `${v}%`} stroke="hsl(var(--muted-foreground))" />
                     <YAxis type="category" dataKey="feature" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                     <Tooltip
                       formatter={(value: number) => [`${value}%`, 'Importance']}
@@ -137,19 +139,19 @@ const Dashboard = () => {
               <div>
                 <h3 className="font-semibold mb-2">Algorithm</h3>
                 <p className="text-sm text-muted-foreground">
-                  Gradient Boosting Classifier with hyperparameter tuning for optimal performance on crash severity prediction.
+                  CatBoost Classifier - a gradient boosting algorithm optimized for categorical features and crash severity prediction.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Training Data</h3>
                 <p className="text-sm text-muted-foreground">
-                  Trained on 125,000+ historical crash records with 18 carefully engineered features.
+                  Trained on 4,000 crash records with 17 engineered features including speed, impact angle, and driver characteristics.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Validation</h3>
                 <p className="text-sm text-muted-foreground">
-                  Cross-validated with 87.3% accuracy. Regularly updated with new crash data for improved predictions.
+                  Validated with 68.88% accuracy on test set. Model predicts 3 severity classes: Minor Injury, Severe Injury, and Fatal.
                 </p>
               </div>
             </div>

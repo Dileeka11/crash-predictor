@@ -286,23 +286,22 @@ class PredictionService:
         return self.severity_labels[predicted_index]
 
     def predict(self, data: PredictionRequest) -> PredictionResponse:
-        if self.model is not None:
-            # Use actual model prediction
-            features = self._preprocess_input(data)
-            probabilities = self.model.predict_proba(features)[0]
-            predicted_class = int(np.argmax(probabilities))
+        if self.model is None:
+            raise RuntimeError("Model not loaded. Please ensure catboost_model.cbm exists in ml_models/")
+        
+        # Use actual model prediction
+        features = self._preprocess_input(data)
+        probabilities = self.model.predict_proba(features)[0]
+        predicted_class = int(np.argmax(probabilities))
 
-            # Align label with the model's internal class ordering when available
-            if self.model_classes:
-                severity = self._resolve_severity_label(self.model_classes[predicted_class], predicted_class)
-            else:
-                severity = self.severity_labels[predicted_class]
-
-            # Confidence should always reflect the highest predicted probability
-            confidence = float(np.max(probabilities))
+        # Align label with the model's internal class ordering when available
+        if self.model_classes:
+            severity = self._resolve_severity_label(self.model_classes[predicted_class], predicted_class)
         else:
-            # Fallback to rule-based prediction if model not loaded
-            severity, confidence = self._fallback_prediction(data)
+            severity = self.severity_labels[predicted_class]
+
+        # Confidence should always reflect the highest predicted probability
+        confidence = float(np.max(probabilities))
 
         risk_factors = self._calculate_risk_factors(data)
         recommendations = self._generate_recommendations(data, risk_factors)
@@ -313,78 +312,6 @@ class PredictionService:
             riskFactors=risk_factors,
             recommendations=recommendations
         )
-
-    def _fallback_prediction(self, data: PredictionRequest) -> Tuple[str, float]:
-        risk_score = 0
-
-        if data.crashSpeed > 100:
-            risk_score += 35
-        elif data.crashSpeed > 70:
-            risk_score += 20
-        elif data.crashSpeed > 40:
-            risk_score += 10
-
-        if not data.seatbeltUsed:
-            risk_score += 25
-        if not data.airbagDeployed:
-            risk_score += 15
-
-        if data.crashType.value == "Head-on":
-            risk_score += 20
-        elif data.crashType.value == "Rollover":
-            risk_score += 18
-        elif data.crashType.value == "Side":
-            risk_score += 12
-
-        if data.vehicleType.value == "Motorcycle":
-            risk_score += 20
-
-        if data.weatherCondition.value != "Clear":
-            risk_score += 8
-
-        if data.roadCondition.value == "Icy":
-            risk_score += 12
-        elif data.roadCondition.value != "Dry":
-            risk_score += 6
-
-        if data.alcoholLevel > 0.08:
-            risk_score += 25
-        elif data.alcoholLevel > 0:
-            risk_score += 12
-
-        if data.visibility < 100:
-            risk_score += 15
-        elif data.visibility < 300:
-            risk_score += 8
-
-        if data.timeOfDay.value == "Night":
-            risk_score += 8
-
-        if data.impactAngle > 120:
-            risk_score += 10
-
-        if data.drivingExperience < 2:
-            risk_score += 8
-
-        if data.distractionLevel.value != "None":
-            risk_score += 10
-
-        if data.brakeCondition.value == "Worn out":
-            risk_score += 8
-        if data.tireCondition.value == "Worn out":
-            risk_score += 6
-
-        if risk_score >= 70:
-            severity = "Fatal"
-            confidence = min(0.95, 0.75 + (risk_score - 70) / 100)
-        elif risk_score >= 40:
-            severity = "Severe Injury"
-            confidence = min(0.92, 0.7 + (risk_score - 40) / 100)
-        else:
-            severity = "Minor Injury"
-            confidence = max(0.65, 0.85 - risk_score / 100)
-
-        return severity, confidence
 
 
 prediction_service = PredictionService()
